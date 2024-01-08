@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "258810540563",
+    "project_id": "connect-app-99925",
+    "storage_bucket": "connect-app-99925.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258810540563:android:61aa9c171520cb1f42c5e6",
+        "android_client_info": {
+          "package_name": "com.example.firbase_first_connect1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK80RiktEvMCulfwkOlOXRh5ZwyOtanxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

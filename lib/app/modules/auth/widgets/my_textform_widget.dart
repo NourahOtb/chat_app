@@ -1,63 +1,53 @@
 import 'package:firbase_first_connect1/app/core/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 
-class MyTextFormWidget extends StatelessWidget {
-  const MyTextFormWidget(
-      {required this.controller,
-      required this.obscureText,
-      required this.focusNode,
-      required this.validator,
-      required this.prefIcon,
-      required this.labelText,
-      required this.textInputAction,
-      required this.onChanged,
-      this.suffexIcon,
-      this.togglePassword,
-      super.key});
+class MyTextFormField extends StatelessWidget {
+  const MyTextFormField({
+    super.key,
+    required this.textEditingController,
+    required this.myFocusNode,
+    required this.myTextInputAction,
+    required this.labelText,
+    required this.prefexIcon,
+    this.suffexIcon,
+    this.togglePassword,
+    required this.obsecureText,
+    required this.onChanged,
+    this.validator,
+  });
 
-  // Controller for the text field
-  final TextEditingController controller;
-  // to obscure text or not bool
-  final bool obscureText;
-  // FocusNode for input
-  final FocusNode focusNode;
-  // Validator function
-  final String? Function(String?)? validator;
-  // Prefix icon for input form
-  final Icon prefIcon;
-  // Suffex icon for password field
-  final Icon? suffexIcon;
-  // label for input form
+  final TextEditingController textEditingController;
+  final FocusNode myFocusNode;
+  final TextInputAction myTextInputAction;
   final String labelText;
-  // The keyword action to display
-  final TextInputAction textInputAction;
-
-  final String? Function(String?)? onChanged;
-
-  final void Function()? togglePassword;
+  final Icon prefexIcon;
+  final Icon? suffexIcon;
+  final Function()? togglePassword;
+  final bool obsecureText;
+  final Function(String)? onChanged;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: context.screenHeight * 0.07,
       child: TextFormField(
-        controller: controller,
+        controller: textEditingController,
+        focusNode: myFocusNode,
+        textInputAction: myTextInputAction,
         decoration: InputDecoration(
-          // Input with border outlined
-          border: const OutlineInputBorder(
-            // Make border edge circular
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
+          contentPadding: EdgeInsets.all(20),
           label: Text(labelText),
+          prefixIcon: prefexIcon,
           suffix: IconButton(
-            onPressed: togglePassword,
             icon: suffexIcon ?? const SizedBox(),
+            onPressed: togglePassword,
           ),
-          prefixIcon: prefIcon,
         ),
-        focusNode: focusNode,
-        textInputAction: textInputAction,
-        obscureText: obscureText, // to hide the password
+        obscureText: obsecureText,
         validator: validator,
         onChanged: onChanged,
       ),

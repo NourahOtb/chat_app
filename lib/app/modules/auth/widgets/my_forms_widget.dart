@@ -1,158 +1,108 @@
-// import 'package:firbase_first_connect1/app/modules/auth/widgets/my_textform_widget.dart';
-// import 'package:flutter/material.dart';
-
-// class MyFormsFields extends StatefulWidget {
-//   const MyFormsFields({super.key, required this.formkey});
-
-//   final GlobalKey<FormState> formkey;
-
-//   @override
-//   State<MyFormsFields> createState() => _MyFormsFieldsState();
-
-// }
-
-// class _MyFormsFieldsState extends State<MyFormsFields> {
-//   final
-
-// final TextEditingController emailController = TextEditingController();
-// final TextEditingController passwordController = TextEditingController();
-// final TextEditingController usernameController = TextEditingController();
-
-// final FocusNode emailNode = FocusNode();
-// final FocusNode passwordlNode = FocusNode();
-// final FocusNode userNameNode = FocusNode();
-
-// @override
-// void dispose(){
-// emailController.dispose();
-// passwordController.dispose();
-// usernameController.dispose();
-// emailNode.dispose();
-// passwordlNode.dispose();
-// userNameNode.dispose();
-
-// }
-
-//   @override
-//   Widget build(BuildContext context) {
-
-//     return Form(
-//       key: widget.formkey,
-//       child: Column(
-//         children: [
-//           MyTextFormWidget(
-//             TextEditingController: emailController,
-//             myFocusNode: emailNode,
-//             focusNode: focusNode,
-//         textInputAction: textInputAction,
-//         obscureText: obscureText, // to hide the password
-//         validator: validator,
-//         onChanged: onChanged,
-
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// ignore_for_file: unused_element
-
 import 'package:firbase_first_connect1/app/core/extensions/build_context_extensions.dart';
 import 'package:firbase_first_connect1/app/modules/auth/domain/helper/auth_validators.dart';
+import 'package:firbase_first_connect1/app/modules/auth/domain/providers/auth_providers.dart';
 import 'package:firbase_first_connect1/app/modules/auth/widgets/my_textform_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyAuthForm extends StatefulWidget {
-  const MyAuthForm({
-    super.key,
-    this.registerFormKey,
-  });
+class MyFormFields extends ConsumerStatefulWidget {
+  const MyFormFields({super.key, required this.formKey});
 
-  final GlobalKey<FormState>? registerFormKey;
+  final GlobalKey<FormState> formKey;
 
   @override
-  State createState() => _MyAuthFormState();
+  ConsumerState<MyFormFields> createState() => _MyFormFieldsState();
 }
 
-class _MyAuthFormState extends State<MyAuthForm> {
+class _MyFormFieldsState extends ConsumerState<MyFormFields> {
   final _authValidators = AuthValidators();
 
   final TextEditingController emailController = TextEditingController();
-  final FocusNode emailFocusNode = FocusNode();
-
-  final TextEditingController userNameController = TextEditingController();
-  final FocusNode userNameFocus = FocusNode();
-
   final TextEditingController passwordController = TextEditingController();
-  final FocusNode passwordFocusNode = FocusNode();
+  final TextEditingController userNameController = TextEditingController();
+
+  final FocusNode emailNode = FocusNode();
+  final FocusNode passwordNode = FocusNode();
+  final FocusNode userNameNode = FocusNode();
 
   @override
   void dispose() {
-    super.dispose();
     emailController.dispose();
-    emailFocusNode.dispose();
-
     passwordController.dispose();
-    passwordFocusNode.dispose();
-
     userNameController.dispose();
-    userNameFocus.dispose();
+    emailNode.dispose();
+    passwordNode.dispose();
+    userNameNode.dispose();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Form(
-        key: widget.registerFormKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              MyTextFormWidget(
-                controller: emailController,
-                obscureText: false,
-                focusNode: emailFocusNode,
-                validator: (input) {
-                  return _authValidators.emailValidator(input);
-                },
-                prefIcon: const Icon(Icons.email),
-                labelText: context.translate.email,
-                textInputAction: TextInputAction.next,
-                onChanged: null,
+    final formProvider = ref.watch(authFormController);
+    return Form(
+      key: widget.formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            MyTextFormField(
+              textEditingController: emailController,
+              myFocusNode: emailNode,
+              myTextInputAction: TextInputAction.next,
+              labelText: context.translate.email,
+              prefexIcon: const Icon(Icons.email),
+              obsecureText: false,
+              onChanged: (val) {
+                formProvider.setEmailField(val);
+              },
+              validator: (value) {
+                return _authValidators.emailValidator(value);
+              },
+            ),
+            SizedBox(
+              height: context.screenHeight * 0.03,
+            ),
+            MyTextFormField(
+              textEditingController: userNameController,
+              obsecureText: false,
+              myFocusNode: userNameNode,
+              validator: (input) => _authValidators.userNameValidators(input),
+              prefexIcon: const Icon(Icons.person),
+              labelText: context.translate.userName,
+              myTextInputAction: TextInputAction.next,
+              onChanged: (value) {
+                formProvider.setUserNameField(value);
+                //user name
+              },
+            ),
+            SizedBox(
+              height: context.screenHeight * 0.03,
+            ),
+            MyTextFormField(
+              textEditingController: passwordController,
+              obsecureText: formProvider.togglePassword ? false : true,
+              myFocusNode: passwordNode,
+              validator: (input) => _authValidators.passwordVlidator(input),
+              prefexIcon: const Icon(Icons.password),
+              labelText: context.translate.password,
+              myTextInputAction: TextInputAction.next,
+              onChanged: (value) {
+                formProvider.setPasswordField(value);
+              },
+              togglePassword: () {
+                formProvider.togglePasswordIcon();
+              },
+              suffexIcon: Icon(
+                formProvider.togglePassword
+                    ? Icons.remove_red_eye_outlined
+                    : Icons.remove_red_eye_rounded,
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              MyTextFormWidget(
-                controller: userNameController,
-                obscureText: false,
-                focusNode: userNameFocus,
-                validator: (input) => _authValidators.userNameValidators(input),
-                prefIcon: const Icon(Icons.person),
-                labelText: context.translate.userName,
-                textInputAction: TextInputAction.next,
-                onChanged: null,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              MyTextFormWidget(
-                controller: passwordController,
-                obscureText: false,
-                focusNode: passwordFocusNode,
-                validator: (input) => _authValidators.passwordVlidator(input),
-                prefIcon: const Icon(Icons.password),
-                labelText: context.translate.password,
-                textInputAction: TextInputAction.done,
-                onChanged: null,
-                togglePassword: null,
-                suffexIcon: Icon(
-                  Icons.remove_red_eye_outlined,
-                ),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: context.screenHeight * 0.05,
+            ),
+          ],
         ),
       ),
     );

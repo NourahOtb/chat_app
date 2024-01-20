@@ -6,8 +6,8 @@ abstract class MyNamedRoutes {
   static const chatDetails = 'chatDetails';
   static const profile = 'profile';
   static const editProfile = 'editProfile';
+  static const home = 'home';
+  static const location = 'location';
 }
-
-
 
 // final x MyNAmedRoutes.(name directly)

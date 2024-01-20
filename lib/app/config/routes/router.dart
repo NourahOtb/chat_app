@@ -1,4 +1,5 @@
 // import 'package:firebase_first_connect1/app/modules/navbar/view/bottom_navbar_scaffold';
+import 'package:firbase_first_connect1/app/modules/navbar/view/bottom_navbar_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

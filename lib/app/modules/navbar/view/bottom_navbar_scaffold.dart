@@ -1,6 +1,6 @@
-import 'package:connect_app/app/config/router/my_named_routes.dart';
-import 'package:connect_app/app/config/theme/my_colors.dart';
-import 'package:connect_app/app/core/extensions/build_context_extinsion.dart';
+import 'package:firbase_first_connect1/app/config/routes/named_routes.dart';
+import 'package:firbase_first_connect1/app/config/theme/my_colors.dart';
+import 'package:firbase_first_connect1/app/core/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
